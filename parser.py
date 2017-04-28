@@ -2,7 +2,7 @@ from HTMLParser import HTMLParser
 from htmlentitydefs import name2codepointa
 
 
-class Tag():
+class Tag(object):
     name = ''
     text = ''
     first_child = 0
