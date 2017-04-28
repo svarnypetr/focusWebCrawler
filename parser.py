@@ -1,5 +1,5 @@
 from HTMLParser import HTMLParser
-from htmlentitydefs import name2codepointa
+from htmlentitydefs import name2codepoint
 
 
 class Tag(object):

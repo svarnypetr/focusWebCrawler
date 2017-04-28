@@ -22,7 +22,7 @@ class WebCrawler(object):
         has_been_scraped = 0
         word_dict = {}
 
-    def __init__(self, re_compiled_obj):
+    def __init__(self):
         #self.filter_list.append(self.Filter(1,'.cnn.'))
         self.parser = MyHTMLParser()
 
@@ -165,7 +165,7 @@ class WebCrawler(object):
         """ User calls this function to start crawling the web """
         d = {}
         self.link_dict.clear()
-        self.re_compiled_obj = self.get_regex_filter(seed_urls)
+        self.re_compiled_obj = re.compile('(?<=[.]cnn)[.]com')#self.get_regex_filter(seed_urls)
 
         # init global dictionary variable to the seed url's passed in
         for page in seed_urls:
