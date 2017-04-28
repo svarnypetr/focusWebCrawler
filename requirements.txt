@@ -1,10 +1,1 @@
 HTMLParser
-htmlentitydefs
-urllib
-socket
-httplib
-
-
-
-
-
