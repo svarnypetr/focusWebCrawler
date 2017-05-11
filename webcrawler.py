@@ -53,7 +53,7 @@ class WebCrawler(object):
         #print "match = {}".format(match)
         return match
 
-    def find_h1_tag(self, s,pos):
+    def find_h1_tag(self, s, pos):
         """ finds the first <h1> tag """
         start = s.find('<h1>', pos)
         end = s.find('</h1>', start)
@@ -93,7 +93,7 @@ class WebCrawler(object):
                 d = self.save_tag_text(tag, d)
         return d
 
-    def save_all_links_on_page(self, page_str, limit=60):
+    def save_all_links_on_page(self, page_str, limit):
         """ Stores all links found on the current page in a dictionary """
         d = {}
         offset = 0
@@ -120,14 +120,14 @@ class WebCrawler(object):
                         num_duplicate_pages = num_duplicate_pages + 1
                 else:
                     num_pages_filtered = num_pages_filtered + 1
-                offset = offset + 1 
+                offset = offset + 1
             i = i + 1
         print "{} out of {} links were filtered".format(num_pages_filtered, i)
         print "{} out of {} links were duplicates".format(num_duplicate_pages, i)
         #print "{} links are being returned from save_all_links".format(len(d))
         return d
 
-    def save_all_links_recursive(self, links, depth):
+    def save_all_links_recursive(self, links, depth, limit):
         """ Recursive function that
             1) converts each page (link) into a string
             2) stores all links found in a dictionary """
@@ -144,10 +144,10 @@ class WebCrawler(object):
                 page_str = self.get_page(url)
                 print "done getting {} over the internet".format(url)
                 self.link_dict[url].word_dict = self.save_page_text(page_str)
-                d = self.save_all_links_on_page(page_str)
+                d = self.save_all_links_on_page(page_str, limit)
                 self.link_dict[url].has_been_scraped = 1
                 # d contains all the links found on the current page
-                self.save_all_links_recursive(d, depth)
+                self.save_all_links_recursive(d, depth, limit)
 
     def get_regex_filter(self, seed_urls):
         """Make regex filter based on the seed urls."""
@@ -161,11 +161,11 @@ class WebCrawler(object):
         regex_filter = re.compile('(' + reg_string + ')')
         return regex_filter
 
-    def start_crawling(self, seed_urls, depth):
+    def start_crawling(self, seed_urls, depth, limit=60):
         """ User calls this function to start crawling the web """
         d = {}
         self.link_dict.clear()
-        self.re_compiled_obj = re.compile('(?<=[.]cnn)[.]com')#self.get_regex_filter(seed_urls)
+        self.re_compiled_obj = re.compile('(?<=[.]aktualne)[.]cz')#self.get_regex_filter(seed_urls)
 
         # init global dictionary variable to the seed url's passed in
         for page in seed_urls:
@@ -174,7 +174,7 @@ class WebCrawler(object):
         self.initial_depth = depth
         # start a recursive crawl
         # can't pass in self.link_dict because then i get a RuntimeError: dictionary changed size during iteration
-        self.save_all_links_recursive(d, depth)
+        self.save_all_links_recursive(d, depth, limit)
 
     def print_all_page_text(self):
         """ prints contents of all the word dictionaries """
