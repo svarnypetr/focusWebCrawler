@@ -152,7 +152,6 @@ class WebCrawler(object):
     def get_regex_filter(self, seed_urls):
         """Make regex filter based on the seed urls."""
         #TODO: raise error if url malformed {not capable of getting RE}
-        #TODO: assume the path starts with a / or the string does not contain
         #cnn_url_regex = re.compile('(?<=[.]cnn)[.]com')
         reg_list = []
         for url in seed_urls:
@@ -161,11 +160,27 @@ class WebCrawler(object):
         regex_filter = re.compile('(' + reg_string + ')')
         return regex_filter
 
+    def get_domain(self, url):
+        if "/" in url:
+            dom = url[url.find("//") + 2:]
+            dom = dom[:dom.find("/")]
+        else:
+            dom = url
+        print(dom)
+        if "." in dom:
+            dom = dom.replace(".", ")[.]")
+            dom = dom.replace(")[.]", "(?<=[.]", 1)
+            dom = dom[dom.find("("):]
+        else:
+            raise ValueError('Expected a usual URL.')
+        return dom
+
     def start_crawling(self, seed_urls, depth, limit=60):
         """ User calls this function to start crawling the web """
         d = {}
         self.link_dict.clear()
-        self.re_compiled_obj = re.compile('(?<=[.]aktualne)[.]cz')#self.get_regex_filter(seed_urls)
+        #self.re_compiled_obj = re.compile('(?<=[.]aktualne)[.]cz')
+        self.re_compiled_obj = self.get_regex_filter(seed_urls)
 
         # init global dictionary variable to the seed url's passed in
         for page in seed_urls:

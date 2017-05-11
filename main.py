@@ -3,4 +3,4 @@
 from webcrawler import WebCrawler
 
 w = WebCrawler()
-w.start_crawling(['https://www.aktualne.cz/'], 1, 180)
+w.start_crawling(['http://www.aktualne.cz/'], 1, 180)
