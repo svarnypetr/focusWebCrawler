@@ -3,4 +3,8 @@
 from webcrawler import WebCrawler
 
 w = WebCrawler()
-w.start_crawling(['http://www.aktualne.cz/'], 1, 180)
+
+seed_urls = ['https://www.aktualne.cz/', 'https://www.seznam.cz']
+
+w.start_crawling(seed_urls, 1, 60)
+print(len(w.link_dict))
