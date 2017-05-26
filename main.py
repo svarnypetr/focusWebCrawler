@@ -6,5 +6,6 @@ w = WebCrawler()
 
 seed_urls = ['https://www.aktualne.cz/', 'https://www.seznam.cz']
 
-w.start_crawling(seed_urls, 1, 60)
-print(len(w.link_dict))
+for seed in seed_urls:
+    w.start_crawling([seed], 2, 60)
+    print(len(w.link_dict))

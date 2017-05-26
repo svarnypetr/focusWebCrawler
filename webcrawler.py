@@ -188,7 +188,8 @@ class WebCrawler(object):
             d[page] = self.PageInfo()
         self.initial_depth = depth
         # start a recursive crawl
-        # can't pass in self.link_dict because then i get a RuntimeError: dictionary changed size during iteration
+        # can't pass in self.link_dict,
+        # leads to RuntimeError: dictionary changed size during iteration
         self.save_all_links_recursive(d, depth, limit)
 
     def print_all_page_text(self):
@@ -196,7 +197,8 @@ class WebCrawler(object):
         for i in range(len(self.link_dict)):
             page_info = self.link_dict.values()[i]
             url = self.link_dict.keys()[i]
-            print 'url = {}, has_been_scraped = {}'.format(url, page_info.has_been_scraped)
+            print('url = {}, has_been_scraped = {}'.format(url,
+                                                  page_info.has_been_scraped))
             d = page_info.word_dict
             for j in range(len(d)):
                 word = d.keys()[j]
